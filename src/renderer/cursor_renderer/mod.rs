@@ -8,10 +8,12 @@ use skia_safe::{Canvas, Paint, Path, Point};
 use crate::{
     bridge::EditorMode,
     editor::{Cursor, CursorShape},
+    event_aggregator::EVENT_AGGREGATOR,
     redraw_scheduler::REDRAW_SCHEDULER,
     renderer::animation_utils::*,
     renderer::{GridRenderer, RenderedWindow},
     settings::{FromValue, SETTINGS},
+    window::WindowCommand,
 };
 
 use blink::*;
@@ -245,14 +247,21 @@ impl CursorRenderer {
                 .max(window.grid_current_position.y)
                 .min(window.grid_current_position.y + window.grid_size.height as f32 - 1.0);
 
-            self.destination = (grid_x * font_width as f32, grid_y * font_height as f32).into();
+            self.destination = (
+                grid_x * font_width as f32, 
+                grid_y * font_height as f32
+            ).into();
         } else {
             self.destination = (
                 (cursor_grid_x * font_width) as f32,
                 (cursor_grid_y * font_height) as f32,
-            )
-                .into();
+            ).into();
         }
+
+        EVENT_AGGREGATOR.send(
+            WindowCommand::UpdateIMEPosition(
+                self.destination.x,
+                self.destination.y));
     }
 
     pub fn draw(

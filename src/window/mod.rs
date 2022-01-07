@@ -7,7 +7,7 @@ use std::time::{Duration, Instant};
 
 use glutin::{
     self,
-    dpi::PhysicalSize,
+    dpi::{PhysicalSize, PhysicalPosition},
     event::{Event, WindowEvent},
     event_loop::{ControlFlow, EventLoop},
     window::{self, Fullscreen, Icon},
@@ -49,6 +49,7 @@ pub enum WindowCommand {
     TitleChanged(String),
     SetMouseEnabled(bool),
     ListAvailableFonts,
+    UpdateIMEPosition(f32, f32),
 }
 
 pub struct GlutinWindowWrapper {
@@ -94,6 +95,10 @@ impl GlutinWindowWrapper {
                     self.mouse_manager.enabled = mouse_enabled
                 }
                 WindowCommand::ListAvailableFonts => self.send_font_names(),
+                WindowCommand::UpdateIMEPosition(x, y) => {
+                    let window = self.windowed_context.window();
+                    window.set_ime_position(PhysicalPosition::new(x, y));
+                }
             }
         }
     }

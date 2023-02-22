@@ -149,12 +149,13 @@
 <p>Should Neovide happen not to start at all, check the following:</p>
 <ul>
 <li>
-<p>if you're using zsh <code>~/.zshenv</code>, <code>~/.zprofile</code> and  <code>~/.zlogin</code>, or whatever the equivalent for
-your shell is if anything emits output during shell startup, since Neovide uses your shell to
-find <code>nvim</code>. You can instead use <code>~/.zshrc</code>.</p>
+<p>Shell startup files if they output anything during startup, like <code>neofetch</code> or <code>echo</code>.
+Neovide uses your shell to find <code>nvim</code> and can't know the difference bewteen output and
+<code>nvim</code>'s path. You can use your resource file (in the case of zsh <code>~/.zshrc</code>) instead for
+such commands.</p>
 </li>
 <li>
-<p>whether you can reproduce this by running from the latest git main commit.
+<p>Whether or not you can reproduce this by running from the latest git main commit.
 This can be done by running from source or just grabbing the binary from the <a href="https://github.com/neovide/neovide/actions/workflows/build.yml"><code>Actions</code> tab on
 GitHub</a>.</p>
 </li>
@@ -174,8 +175,28 @@ Reference issue <a href="https://github.com/neovide/neovide/pull/1242">#1242</a>
 </ul>
 <h2 id="linux"><a class="header" href="#linux">Linux</a></h2>
 <ul>
-<li>If you recieve errors complaining about DRI3 settings, please reference issue
-<a href="https://github.com/neovide/neovide/issues/44#issuecomment-578618052">#44</a>.</li>
+<li>
+<p>If you receive errors complaining about DRI3 settings, please reference issue
+<a href="https://github.com/neovide/neovide/issues/44#issuecomment-578618052">#44</a>.</p>
+</li>
+<li>
+<p>If your scrolling is suttering</p>
+<ul>
+<li>
+<p>Add flag <code>--novsync</code> before startup as a quickfix.</p>
+</li>
+<li>
+<p>Check if the value of <code>g:neovide_refresh_rate</code> and the refresh rate of your monitor are matched.</p>
+</li>
+<li>
+<p>If your <code>g:neovide_refresh_rate</code> is correct, then check if you are using dual monitors with
+mixed refresh rate, say <code>144</code> and <code>60</code>, by checking output of <code>xrandr</code> (wayland should support
+mixed refresh rate out of the box), if so,that's because X11 does not support mixed refresh
+rate well. You may be able to fix this through your compositor or by switching to wayland.
+As a temporary work around, you may set <code>g:neovide_refresh_rate</code> to the lower value.</p>
+</li>
+</ul>
+</li>
 </ul>
 
                     </main>

@@ -59,13 +59,15 @@ impl KeyboardManager {
                 self.queued_input_events
                     .push(InputEvent::KeyEvent(key_event.clone()));
             }
+            /*
             Event::WindowEvent {
-                event: WindowEvent::ReceivedImeText(string),
+                event: WindowEvent::Ime(string),
                 ..
             } => {
                 self.queued_input_events
                     .push(InputEvent::ImeInput(string.to_string()));
             }
+            */
             Event::WindowEvent {
                 event: WindowEvent::ModifiersChanged(modifiers),
                 ..
